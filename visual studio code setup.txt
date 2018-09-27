@@ -1,0 +1,10 @@
+Setup visual code ubuntu:
+File->preference->search for power -> change path for power shell to ubunty's path
+
+use the following command in windows command prompt to find ubuntu's path
+where ubuntu
+
+extension to install in visual code:
+Bracket Pair Colorizer
+Angular v6 Snippets by John papa
+

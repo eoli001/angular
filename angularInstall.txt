@@ -1,0 +1,37 @@
+https://angular.io/guide/quickstart
+
+sudo apt install npm
+npm install --save-dev @angular/cli@latest
+
+install bootstrap:
+npm install --save bootstrap@3
+
+and add 
+"node_modules/bootstrap/dist/css/bootstrap.min.css",
+to angular.json file 
+"styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.css"
+            ],
+
+install Augury in chrome extension
+-----
+debug in visual code
+install Chrome debugger inside of Visual code
+add debug configuration to chrome in visual code
+
+
+--------------------
+new project:
+How to use
+
+Run "npm install" inside this project folder to install all dependencies.
+
+Make sure you use the latest version of the CLI (upgrade guide below)
+
+Run "ng serve" to see the app in action (try "npm start" in case "ng serve" fails).
+
+Feel free to compare it with your project code to spot any errors you might have.
+
+
+How to upgrade the CLI

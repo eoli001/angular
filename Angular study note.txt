@@ -1,0 +1,464 @@
+Angular study note:
+
+Loop
+*ngFor = "let recipe of recipes"
+---------------
+String interpretation and property binding
+String interpretation
+scr = "{{recipe.imagePath}}"
+Property binding bind to source property itself
+[scr] = "recipe.imagePath"
+---------------
+
+Creare a dropdown:
+<button type = "button" class="btn btn-primary dropdown-toggle> 
+	Manage Recipe
+	<span class = "caret"></span>
+</button>
+<ul class="dropdown-menu">
+      <li><a href="#">HTML</a></li>
+      <li><a href="#">CSS</a></li>
+      <li><a href="#">JavaScript</a></li>
+</ul>
+--------------------
+Constructor Example Item Inside of a model:
+export class Ingredient{
+	constructor(public name: string, public amount: number){}
+}
+export class Recipe{
+	public name:string;
+	public description: string;
+	public imagePath:string;
+	constructor(name: string, amount: number){
+		this.name = name;
+		this.description = desc;
+		this.imagePath = imagePath;
+	}
+}
+
+--------------------
+Submit button:
+class = "btn btn-success" type = "submit"
+Delete button:
+class = "btn btn-danger" type = 'button'
+Clear button:
+class = "btn btn-primary" type = 'button'
+
+---------------------
+By default all properties can only be used within components
+Allow parent component to access an object is to add a decorator:
+Add Input to import, and add @Input() to the front of the property
+i.e. @Input() element: {type: string, name:string, content: string}
+
+@Input('AliasName') to use a alias name
+
+----------------
+
+Some important syntax:
+
+click event:
+(click)="onAddBlueprint()"
+
+If statement in Angular:
+*ngIf="element.type === 'server'"
+
+ng-template works with ngIf
+<div>
+<app-recipe-list
+	(recipeWasSelected) = "SelectedRecipe = $event"></app-recipe-list>
+</div>
+<div class= "col-md7">
+	<app-recipe-detail
+		*ngIf= "selectedRecipe; else infoText"></app-recipe-detail>
+
+------------------------------
+<ng-template #infoText>
+	<p>Please select a Recipe!</p>
+</ng-template>
+
+
+For Loop:
+*ngFor="let element of serverElements"
+
+define a property:
+[element]= "serverElement"
+
+Different classes:
+<div class="panel-heading">{{ element.name }}</div>
+<div class="panel-body"  ...
+<input type="text" class="form-control" ...
+<button class="btn btn-primary"
+
+----------------
+Put this line under component inside of a example.ts file,
+then css file will apply to all other component's style other than this example.ts 
+encapsulation:ViewEncapsulation.None
+
+--------------------
+Local Reference can be placed on any html element:
+#serverNameInput
+pass the local html element to the ts files
+inside of html file:
+<input type="text" class="form-control" #serverNameInput> 
+pass the local html element to the ts files
+inside ts file:
+onAddBlueprint(nameInput : HTMLInputElement) {...}
+---------------------
+ng-content is a hook prochecked into your component:
+To make the original code to work within other files with anthor file tag,
+the solution is to insert ng-content
+example:
+1.here replace original code with ng-content
+server-element.component.html:
+
+<div class="panel-body">
+	<ng-content></ng-content>
+</div>
+
+2. Copy and paste the original code in app component
+app.component.html:
+<app-server-element *ngFor = "let serverElement of serverElements">
+	//here is the orginal code
+</app-server-element>
+------------------------
+Lifecyle of Angular
+ngOnChanges - Called after a bound input property changes
+ngOnInit - Called once the component is initialized
+ngDoCheck - Called during every change detection run
+ngAfterContentInit - Called after content(ng-content) has been projected into View
+ngAfterContentChecked - Called every time the projected content has been checked
+ngAfterViewInit - Called after the component's view(and child views) has been initialized
+ngAfterViewChecked - Called every time the view (and child views) have been checked
+ngOnDestroy - Called once the component is about to be destroyed
+
+-------------------------
+3 method to inform ts file of a field in html file:
+1. use ng model
+In html:
+<input type="text" class="form-control" [(ngModel)]="newServerName">
+In ts:
+Declare it on the top of class:
+newServerName = '';
+Uses it in the function:
+serverName: this.newServerName,
+
+2.Use tag to pass into the html function to pass to the ts function
+
+In html:
+<input type="text" class="form-control" #serverNameInput> 
+in the button onclick event, pass the tag to the function call:
+(click)="onAddServer(serverNameInput) 
+
+In ts:
+onAddServer(nameInput : HTMLInputElement) {
+    this.serverCreated.emit({
+      // serverName: this.newServerName,
+      // serverContent: this.newServerContent
+      serverName: nameInput.value,  <- ***
+      serverContent: this.serverContentInput.nativeElement.value
+    });
+  } 
+
+3.Use ViewChild, no need to pass value to parameter in html
+@ViewChild() by adding a tag to html file and uses it in ts:
+In html file:
+<input type="text" class="form-control" #serverContentInput> 
+In ts file, inside of the large class:
+@ViewChild('serverContentInput') serverContentInput : ElementRef;
+use in the function:
+serverContent: this.serverContentInput.nativeElement.value
+
+------------------
+from one html file to other html file:
+app-component.html to be passed:
+<app-server-element *ngFor = "let serverElement of serverElements"
+      [element]= "serverElement"
+      [name]= "serverElement.name">
+	  
+server-element-component.ts to received:
+	  @Input() name: string;
+	  
+server-element-component.html to received:
+<div class="panel-heading">{{ name }}</div>
+
+-----------------
+ContentChild is similar to view child but it is for content like paragraph unlike ViewChild is for view.
+Put ElementRef and ContentChild to import field.
+In html:
+<p #ContentParagraph>
+In ts:
+@ContentChild('ContentParagraph') Paragraph : ElementRef;
+
+---------------------------
+<app-recipe-list
+      (recipeWasSelected)="selectedRecipe = $event"></app-recipe-list>
+selectedRecipe = $event" here means, when listen to recipeWasSelected, when the data is back selectedRecipe 
+will equal to the data.
+------------------
+
+ngClass 
+
+it is for syle, when you defind something in the css file, in this example odd, then
+the style will only apply if the condition satisfies.
+
+In css file:
+.odd{
+  color: red;
+}
+
+In html file:
+[ngClass]="{odd: even % 2 !== 0}"
+----------------------
+ngStyle 
+
+It is for style use:
+In html file:
+[ngStyle]="{backgroundColor: even % 2 !== 0? 'yellow' : 'transparent'}"
+
+-------------------
+three ways to make highlight using Angular:
+1. use ngOnInit directly access the dom
+ngOnInit(){
+        this.elementRef.nativeElement.style.backgroundColor = 'green';
+    }
+2. use renderer within ngOnInit,use HostListener to keep listen to action
+ngOnInit(){
+    this.renderer.setStyle(this.elRef.nativeElement, 'background-color', 'blue');
+  }
+renderer work with event:
+ngOnInit(){
+    
+  }
+@HostListener('mouseenter') mouseover(eventDta: Event){
+    this.renderer.setStyle(this.elRef.nativeElement, 'background-color', 'blue');
+  }
+
+@HostListener('mouseleave') mouseleave(eventDta: Event){
+   this.renderer.setStyle(this.elRef.nativeElement, 'background-color', 'transparent');
+
+3. use HostBinding to bind to a style property
+  @HostBinding('style.backgroundColor') backgroundColor: string ='transparent';
+  constructor(private elRef: ElementRef, private renderer: Renderer2) { }
+  
+  ngOnInit(){
+  }
+  @HostListener('mouseenter') mouseover(eventDta: Event){
+    this.backgroundColor = 'blue';
+  }
+
+  @HostListener('mouseleave') mouseleave(eventDta: Event){
+    this.backgroundColor = 'transparent';
+  }
+-----------------
+Access the directive from html file:
+<p appBetterHighlight= "red" [defaultColor] = "'yellow'">Style me with a better basic directive.</p>
+
+---------------------
+ng-template is used by self define structural directive:
+
+<div *ngIf = "!onlyOdd">
+  <li>
+  </li>
+</div>
+can be rewrite as 
+<ng-template [ngIf] = "!onlyOdd">
+  <div>
+    <li>
+    </li>
+  </dv>
+</ng-template>
+
+-------------------
+Build a structural Directive:
+
+Example unless directive:
+create the file from command line:
+
+In ths file do the following:
+export class UnlessDirective {
+  @Input() set unless(condition: boolean){
+    if (!condition){
+      this.vcRef.createEmbeddedView(this.templateRef);
+    }else{
+      this.vcRef.clear();
+    }
+  }
+  constructor(private templateRef: TemplateRef<any>, private vcRef: ViewContainerRef) { }
+
+}
+
+In the app.html file:
+  <div *appUnless="onlyOdd">
+-----------------------
+ng-switch gives the switch between values:
+example:
+<div [ngSwitch]="value">
+  <P *ngSwitchCase="5"> Value is 5 </P>
+  <P *ngSwitchCase="10"> Value is 10 </P>
+  <P *ngSwitchCase="100"> Value is 100 </P>
+  <P *ngSwitchDefault> Value is Default </P>
+</div>
+------------------------
+use service in angular:
+in the loggingService.ts file:
+1.export class LoggingService{
+    logStatusChange(status: string){
+        console.log('A server status changed, new status: ' + status);
+    }
+}
+
+in ts file that needs to import service such as logging.service:
+2. import
+import { LoggingService } from '../logging.service'
+
+3. put inside of provider:
+inform angular knows how to create such account service
+
+@Component({
+  selector: 'app-account',
+  templateUrl: './account.component.html',
+  styleUrls: ['./account.component.css'],
+  providers: [LoggingService]
+})
+
+4. declare in the constructor:
+constructor(private loggingService: LoggingService){}
+
+----------------
+Hierarchy Service Structure 
+-app module > app component > other components
+
+---------------------
+Injectable() is used when one service require something from another service,
+used by the to be injected side
+@Injectable()
+export class AccountsService{
+
+----------------------
+Subscribe is used in component ts file to listen to the event emitter from a service file
+.subscribe()
+get informed with any changes
+i.e.
+
+in shopping-list.service.ts:
+ingredientsChanged = new EventEmitter<Ingredient[]>();
+
+addIngredients(ingredients: Ingredient[]) {
+    this.ingredients.push(ingredients);
+    this.ingredientsChanged.emit(this.ingredients.slice());
+  }
+  
+In shopping-list.component.ts:
+ngOnInit() {
+    this.ingredients = this.slService.getIngredients();
+    this.slService.ingredientsChanged
+      .subscribe(
+        (ingredients: Ingredient[]) => {
+          this.ingredients = ingredients;
+        }
+      );
+  }
+--------------
+"..." is the spread operator allows the array to insert into array and become one array
+------------------
+router-outlet is a directive that used to direct to page
+<router-outlet></router-outlet>
+
+--------------------
+In app.module.ts
+On the top add: import{Routes,RouterModule}
+
+In the middle:
+const appRoutes: Routes = [
+  { path: '', component: HomeComponent },...]
+  
+On the bottom inside of @NgModule
+imports:[RouterModule.forRoot(appRoutes)] 
+
+
+---------------
+
+In html file re direct using a routerLink
+i.e.<a routerLink="/">Home</a>
+i.e.<a [routerLink]="['users']">Users</a>
+
+-------------
+make tag looks active:
+use routerLinkActive directive in html
+<li role="presentation" routerLinkActive="active"...>
+
+-------------------
+avoid home directory tab is always active, check if full puff is this:
+[routerLinkActiveOptions]="{exact: true}"
+
+-------------------
+Nevigate allows events to nevigate to different tag:
+onLoadServer(id: number) {
+    // complex calculation
+    this.router.navigate(['/servers', id, 'edit'], {queryParams: {allowEdit: '1'}, fragment: 'loading'});
+  }
+  will direct to:
+http://localhost:4200/servers/5/id?allowEdit=1#loading  
+------------------
+Use ActivatedRoute to get to injected currently loaded route
+import {ActivatedRoute} from "@angular/router";
+
+constructor(private route:ActivatedRoute){}
+
+-----------------------
+Retrieve value from url's parameter
+ngOnInit(){
+	this.user = {
+		id:this.route.snapshot.params['id'],
+		name:this.route.snapshot.params['name']}
+}
+-------------------
+the snapshot in the ngOnInit, only gets called if we havent been in this component before,
+to solve this issue, is to subscribe:
+this.paramsSubscription = this.route.params
+      .subscribe(
+        (params: Params) => {
+          this.user.id = params['id'];
+          this.user.name = params['name'];
+        }
+      );
+
+----------------
+In theory, after a subscribe created, we need to unsubscribe, some of observable in angular has been handled by
+angular, but not the ones that we created our own: use ngOnDestroy. 
+ngOnDestroy(){
+	this.paramsSubscription.unsubscribe();
+}
+-----------------
+it is binded to router-link directive
+[queryParams] = "{allowEdit:'1'}" is to add "?allowEdit=1" to the url
+fragment = "loading" is to add "#loading" to the url
+
+--------------------
+Add + to a string will make it become a number:
+const id = +this.route.snapshot.getServer(id);
+
+---------------------------
+nested route:
+Add children to the route definition:
+i.e.
+const appRoutes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'users', component: UsersComponent, children: [
+    { path: ':id/:name', component: UserComponent }
+  ] },...]
+  
+  -------------------------
+  relativeTo is to inform angular router knows to which route you want to nevigate relatively
+  queryParamsHandling is to make sure you dont miss the information you had before
+  onEdit() {
+    this.router.navigate(['edit'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
+  }
+  --------------------------
+  subsitute to component here is redirectTo
+  { path: 'not-found', component: ErrorPageComponent, data: {message: 'Page not found!'} },
+  { path: '**', redirectTo: '/not-found' }
+
+ ** is the wild card that catch routes you are not covering.
+ -------------
+

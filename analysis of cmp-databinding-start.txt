@@ -1,0 +1,9 @@
+App Level
+1.listen to event of serverCreated and blueprintCreated
+2.Event update serverElements
+3.pass the each serverElements to the element in server-element level.
+
+Cockpit Level:
+1.bond newServerName and newServerContent with ngmodel in the input in html file, and used in the on click event
+2.on Click of two buttons, emit event to inform App Level. At the same time update and output serverCreated and blueprintCreated
+with value that got from the bonded newServerName and newServerContent 

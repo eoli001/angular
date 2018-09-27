@@ -1,0 +1,9 @@
+Enter this in bash command to create a new component:
+ng generate component servers
+
+create a folder inside of another folder in command line:
+ng g c recipes/recipe-list --spec false
+
+Create a directive on command line:
+ng g d nameofdirective
+i.e. ng g d better-highlight

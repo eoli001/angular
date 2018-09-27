@@ -1,0 +1,13 @@
+cd ../../mnt/c/Users/yhe/angular/my-first-app
+cd ../../mnt/c/Users/yhe/angular/cmp-databinding-start/cmp-databinding-start
+cd ../../mnt/c/Users/yhe/angular/prj-cmp-databinding-final
+
+cd ../../mnt/c/Users/yhe/angular/services-start/services-start
+cd ../../mnt/c/Users/yhe/angular/services-assignment-start/services-assignment-start
+cd ../../mnt/c/Users/yhe/angular/services-final/services-final
+cd ../../mnt/c/Users/yhe/angular/pjrecipe-cmp-databinding-final
+cd ../../mnt/c/Users/yhe/angular/routing-start
+cd ../../mnt/c/Users/yhe/angular/routing-final
+-----------------
+cd ../../mnt/c/Users/yhe/angular/cmp-databinding-assignment-start  305MB
+cd ../../mnt/c/Users/yhe/angular/cmp-databinding-start  246 MB
